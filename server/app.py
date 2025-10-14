@@ -205,30 +205,30 @@ class Signup(Resource):
             created_at=datetime.now()
         )
 
-        # Generate confirmation token and link
-        email = data['email']
-        token = s.dumps(email, salt='email-confirm')
-        link = url_for('confirmemail', token=token, _external=True)
+        # # Generate confirmation token and link
+        # email = data['email']
+        # token = s.dumps(email, salt='email-confirm')
+        # link = url_for('confirmemail', token=token, _external=True)
 
-        # Compose the confirmation email content
-        msg = MIMEText(f'''
-            <html>
-                <body>
-                    <h2>Hi {data['username']},</h2>
-                    <p>Thank you for signing up for <strong>RescueApp</strong>! Please confirm your email by clicking the link below:</p>
-                    <p><a href="{link}" style="background-color: #F59E0B; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Confirm Email</a></p>
-                    <p>If the above button doesn't work, copy and paste this link into your browser:</p>
-                    <p>{link}</p>
-                    <br>
-                    <p>If you did not sign up, you can safely ignore this email.</p>
-                    <p>Best,<br>The RescueApp Team</p>
-                </body>
-            </html>
-        ''', 'html')
+        # # Compose the confirmation email content
+        # msg = MIMEText(f'''
+        #     <html>
+        #         <body>
+        #             <h2>Hi {data['username']},</h2>
+        #             <p>Thank you for signing up for <strong>RescueApp</strong>! Please confirm your email by clicking the link below:</p>
+        #             <p><a href="{link}" style="background-color: #F59E0B; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Confirm Email</a></p>
+        #             <p>If the above button doesn't work, copy and paste this link into your browser:</p>
+        #             <p>{link}</p>
+        #             <br>
+        #             <p>If you did not sign up, you can safely ignore this email.</p>
+        #             <p>Best,<br>The RescueApp Team</p>
+        #         </body>
+        #     </html>
+        # ''', 'html')
 
-        msg['Subject'] = 'Confirm Your Email'
-        msg['From'] = 'noreplyrescueapp@gmail.com'
-        msg['To'] = email
+        # msg['Subject'] = 'Confirm Your Email'
+        # msg['From'] = 'noreplyrescueapp@gmail.com'
+        # msg['To'] = email
 
         # # Send the confirmation email
         # try:
