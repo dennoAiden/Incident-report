@@ -50,7 +50,7 @@ cloudinary.config(
 )
 
 
-CORS(app,"origins"=["https://incident-report-29zv.onrender.com"])
+CORS(app,origins=["https://incident-report-29zv.onrender.com"])
 migrate=Migrate(app,db)
 db.init_app(app)
 api=Api(app)
