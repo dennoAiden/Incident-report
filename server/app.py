@@ -27,7 +27,7 @@ from models import db, User, Report, Notification, Admin, EmergencyReport, Image
 from threading import Thread
 
 app=Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] ="postgresql://incidentreport_chmo_user:idKOggfhAQGv8n0JsJAnZj7Lu59clVVv@dpg-cubhvhin91rc7393mg1g-a.oregon-postgres.render.com/incidentreport_chmo"
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get ("DATABASE_URL")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"]=False
 app.config['SECRET_KEY'] = '0c3ZMJFCAm5T-NK5ZzBv50ZLuxamAllTob6uzEqRR14'
 app.config['JWT_ACCESS_TOKEN_EXPIRES']=timedelta(minutes=300)
