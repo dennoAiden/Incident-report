@@ -230,25 +230,25 @@ class Signup(Resource):
         msg['From'] = 'noreplyrescueapp@gmail.com'
         msg['To'] = email
 
-        # Send the confirmation email
-        try:
-            with smtplib.SMTP('smtp.gmail.com', 587) as server:
-                server.starttls()
-                server.login('noreplyrescueapp@gmail.com', 'qzambnfrbjqpqlwp')  # Use your app password
-                server.sendmail('noreplyrescueapp@gmail.com', email, msg.as_string())
-                print("Email sent successfully!")
-        except Exception as e:
-            print(f"Error sending email: {e}")
-            return make_response(jsonify({"message": "Error sending confirmation email", "error": str(e)}), 500)
+        # # Send the confirmation email
+        # try:
+        #     with smtplib.SMTP('smtp.gmail.com', 587) as server:
+        #         server.starttls()
+        #         server.login('noreplyrescueapp@gmail.com', 'qzambnfrbjqpqlwp')  # Use your app password
+        #         server.sendmail('noreplyrescueapp@gmail.com', email, msg.as_string())
+        #         print("Email sent successfully!")
+        # except Exception as e:
+        #     print(f"Error sending email: {e}")
+        #     return make_response(jsonify({"message": "Error sending confirmation email", "error": str(e)}), 500)
 
-        # Add user to the database after successful email send
-        try:
-            db.session.add(new_user)
-            db.session.commit()
-            return make_response(jsonify({"message": "User added successfully"}), 201)
-        except Exception as e:
-            db.session.rollback()
-            return make_response(jsonify({"message": "Error creating user", "error": str(e)}), 500)
+        # # Add user to the database after successful email send
+        # try:
+        #     db.session.add(new_user)
+        #     db.session.commit()
+        #     return make_response(jsonify({"message": "User added successfully"}), 201)
+        # except Exception as e:
+        #     db.session.rollback()
+        #     return make_response(jsonify({"message": "Error creating user", "error": str(e)}), 500)
         
 class ConfirmEmail(Resource):
     def get(self, token):
