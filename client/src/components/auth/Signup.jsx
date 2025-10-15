@@ -32,32 +32,35 @@ export default function Signup() {
     },
     validationSchema: signupValidationSchema,
     onSubmit: async (values) => {
-      try {
-        const response = await fetch('https://incident-report-backend-akvl.onrender.com/signup', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            username: values.name,
-            phone: values.phone,
-            email: values.email,
-            password: values.password,
-            role: 'user',
-          }),
-        });
+  try {
+    const response = await fetch('https://incident-report-backend-akvl.onrender.com/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: values.name,
+        phone: values.phone,
+        email: values.email,
+        password: values.password,
+        role: 'user',
+      }),
+    });
 
-        if (response.ok) {
-          toast.success('Account created successfully!');
-          
-        } else {
-          const errorData = await response.json();
-          toast.error(errorData.message || 'Signup failed. Please try again.');
-        }
-      } catch (error) {
-        toast.error('Signup failed. Please try again.');
-      }
-    },
+    if (response.ok) {
+      toast.success('Account created successfully!');
+      setTimeout(() => {
+        navigate('/login');
+      }, 1500);
+    } else {
+      const errorData = await response.json();
+      toast.error(errorData.message || 'Signup failed. Please try again.');
+    }
+  } catch (error) {
+    toast.error('Signup failed. Please try again.');
+  }
+},
+
   });
 
   const handleBackToHome = () => {
