@@ -182,7 +182,7 @@ class Signup(Resource):
 
         # Check if all necessary fields are provided
         if not all([data.get('username'), data.get('email'), data.get('phone'), data.get('password')]):
-            return make_response(jsonify({"message": "Missing required fields"}), 400)
+            return make_response({"message": "Missing required fields"}, 400)
         
         # Validate email format
         if "@" not in data["email"]:
@@ -202,54 +202,19 @@ class Signup(Resource):
             email=data.get('email'),
             password=password,
             role=data.get('role', 'user'),
+            confirmed=True,  # You can set this manually for now
             created_at=datetime.now()
         )
 
-        # # Generate confirmation token and link
-        # email = data['email']
-        # token = s.dumps(email, salt='email-confirm')
-        # link = url_for('confirmemail', token=token, _external=True)
+        # Add user to the database
+        try:
+            db.session.add(new_user)
+            db.session.commit()
+            return make_response({"message": "User added successfully"}, 201)
+        except Exception as e:
+            db.session.rollback()
+            return make_response({"message": "Error creating user", "error": str(e)}, 500)
 
-        # # Compose the confirmation email content
-        # msg = MIMEText(f'''
-        #     <html>
-        #         <body>
-        #             <h2>Hi {data['username']},</h2>
-        #             <p>Thank you for signing up for <strong>RescueApp</strong>! Please confirm your email by clicking the link below:</p>
-        #             <p><a href="{link}" style="background-color: #F59E0B; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Confirm Email</a></p>
-        #             <p>If the above button doesn't work, copy and paste this link into your browser:</p>
-        #             <p>{link}</p>
-        #             <br>
-        #             <p>If you did not sign up, you can safely ignore this email.</p>
-        #             <p>Best,<br>The RescueApp Team</p>
-        #         </body>
-        #     </html>
-        # ''', 'html')
-
-        # msg['Subject'] = 'Confirm Your Email'
-        # msg['From'] = 'noreplyrescueapp@gmail.com'
-        # msg['To'] = email
-
-        # # Send the confirmation email
-        # try:
-        #     with smtplib.SMTP('smtp.gmail.com', 587) as server:
-        #         server.starttls()
-        #         server.login('noreplyrescueapp@gmail.com', 'qzambnfrbjqpqlwp')  # Use your app password
-        #         server.sendmail('noreplyrescueapp@gmail.com', email, msg.as_string())
-        #         print("Email sent successfully!")
-        # except Exception as e:
-        #     print(f"Error sending email: {e}")
-        #     return make_response(jsonify({"message": "Error sending confirmation email", "error": str(e)}), 500)
-
-        # # Add user to the database after successful email send
-        # try:
-        #     db.session.add(new_user)
-        #     db.session.commit()
-        #     return make_response(jsonify({"message": "User added successfully"}), 201)
-        # except Exception as e:
-        #     db.session.rollback()
-        #     return make_response(jsonify({"message": "Error creating user", "error": str(e)}), 500)
-        
 class ConfirmEmail(Resource):
     def get(self, token):
         try:
