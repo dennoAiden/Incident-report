@@ -28,122 +28,136 @@ export default function Navbar() {
   return (
     <nav
       className={`fixed w-full top-0 z-50 transition-all duration-300 ${
-        isScrolled ? 'bg-white/80 backdrop-blur-lg shadow-sm' : 'bg-transparent'
+        isScrolled
+          ? 'bg-white/80 backdrop-blur-lg shadow-md'
+          : 'bg-gray-900/70 backdrop-blur-md shadow-md'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* NAVBAR CONTAINER */}
         <div className="flex justify-between items-center h-16">
-          <Link to={'/'}>
-          <div className="flex items-center">
-            <AlertTriangle
-              className={`h-8 w-8 ${isScrolled ? 'text-yellow-500' : 'text-white'}`}
-            />
-            <span
-              className={`ml-2 text-xl font-bold ${
-                isScrolled ? 'text-gray-900' : 'text-white'
-              }`}
-            >
-              RescueApp!
-            </span>
-          </div>
+          {/* LOGO */}
+          <Link to="/" onClick={() => setIsOpen(false)}>
+            <div className="flex items-center">
+              <AlertTriangle
+                className={`h-8 w-8 ${
+                  isScrolled ? 'text-yellow-500' : 'text-yellow-400'
+                }`}
+              />
+              <span
+                className={`ml-2 text-xl font-bold ${
+                  isScrolled ? 'text-gray-900' : 'text-white'
+                }`}
+              >
+                RescueApp!
+              </span>
+            </div>
           </Link>
 
-          {/* Desktop Navigation */}
+          {/* DESKTOP NAV LINKS */}
           <div className="hidden md:flex items-center space-x-8">
             <Link to="/">
               <button
                 onClick={() => scrollToSection('home')}
                 className={`${
                   isScrolled
-                    ? 'text-gray-700 hover:text-[#5D4E8C]'
-                    : 'text-white hover:text-teal-400'
+                    ? 'text-gray-800 hover:text-yellow-500'
+                    : 'text-white hover:text-yellow-400'
                 } transition-colors`}
               >
                 Home
               </button>
             </Link>
+
             <Link to="/services">
               <button
                 className={`${
                   isScrolled
-                    ? 'text-gray-700 hover:text-[#5D4E8C]'
-                    : 'text-white hover:text-teal-400'
+                    ? 'text-gray-800 hover:text-yellow-500'
+                    : 'text-white hover:text-yellow-400'
                 } transition-colors`}
               >
                 Services
               </button>
             </Link>
+
             <Link to="/about">
               <button
                 className={`${
                   isScrolled
-                    ? 'text-gray-700 hover:text-[#5D4E8C]'
-                    : 'text-white hover:text-teal-400'
+                    ? 'text-gray-800 hover:text-yellow-500'
+                    : 'text-white hover:text-yellow-400'
                 } transition-colors`}
               >
                 About
               </button>
             </Link>
+
             <Link to="/contact">
               <button
                 className={`${
                   isScrolled
-                    ? 'text-gray-700 hover:text-[#5D4E8C]'
-                    : 'text-white hover:text-teal-400'
+                    ? 'text-gray-800 hover:text-yellow-500'
+                    : 'text-white hover:text-yellow-400'
                 } transition-colors`}
               >
                 Contact Us
               </button>
             </Link>
+
             {!isHome && (
               <Link to="/login">
-                <button className="bg-yellow-500 text-black px-4 py-2 rounded-md hover:bg-gray-900 transition-colors">
+                <button className="bg-yellow-500 text-gray-900 px-4 py-2 rounded-md hover:bg-yellow-400 font-semibold transition-colors">
                   Get Access
                 </button>
               </Link>
             )}
           </div>
 
-
+          {/* MOBILE MENU BUTTON */}
           <div className="md:hidden">
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className={`${isScrolled ? 'text-gray-700' : 'text-white'} p-2`}
+              className={`${
+                isScrolled ? 'text-gray-900' : 'text-white'
+              } p-2 transition-colors`}
             >
               {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
           </div>
         </div>
 
+        {/* MOBILE DROPDOWN MENU */}
         <div
           className={`md:hidden transition-all duration-300 ease-in-out ${
             isOpen ? 'block' : 'hidden'
           }`}
         >
-          <div className="py-4 space-y-4">
+          <div className="py-4 space-y-4 bg-gray-900/90 backdrop-blur-md text-white rounded-md shadow-lg">
             <Link to="/" onClick={() => setIsOpen(false)}>
-              <span className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md">
+              <span className="block w-full text-left px-4 py-2 hover:bg-gray-800 rounded-md">
                 Home
               </span>
             </Link>
             <Link to="/services" onClick={() => setIsOpen(false)}>
-              <span className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md">
+              <span className="block w-full text-left px-4 py-2 hover:bg-gray-800 rounded-md">
                 Services
               </span>
             </Link>
             <Link to="/about" onClick={() => setIsOpen(false)}>
-              <span className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md">
+              <span className="block w-full text-left px-4 py-2 hover:bg-gray-800 rounded-md">
                 About
               </span>
             </Link>
             <Link to="/contact" onClick={() => setIsOpen(false)}>
-              <span className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-md">
+              <span className="block w-full text-left px-4 py-2 hover:bg-gray-800 rounded-md">
                 Contact Us
               </span>
             </Link>
+
             {!isHome && (
               <Link to="/login" onClick={() => setIsOpen(false)}>
-                <span className="block w-32 px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-[#4A3D70] transition-colors">
+                <span className="block w-32 mx-auto px-4 py-2 bg-yellow-500 text-gray-900 font-semibold rounded-md hover:bg-yellow-400 transition-colors">
                   Get Access
                 </span>
               </Link>
