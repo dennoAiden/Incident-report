@@ -48,8 +48,8 @@ export default function Signup() {
         });
 
         if (response.ok) {
-          toast.success('Account created successfully! Check your inbox to confirm the email we sent you!');
-          navigate('/verify-email');
+          toast.success('Account created successfully!');
+          
         } else {
           const errorData = await response.json();
           toast.error(errorData.message || 'Signup failed. Please try again.');

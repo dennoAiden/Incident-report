@@ -266,7 +266,7 @@ class ConfirmEmail(Resource):
             user.confirmed = True
             db.session.commit()
 
-            return redirect('https://incident-report-1.onrender.com/login')
+            return redirect('https://incident-report-29zv.onrender.com//login')
         except SignatureExpired:
             return make_response({"message": "Token has expired"}, 400)
         except Exception as e:
