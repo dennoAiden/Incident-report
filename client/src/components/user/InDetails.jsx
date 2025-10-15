@@ -24,17 +24,19 @@ export default function IncidentDetails() {
   const [incidents, setIncidents] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [addresses, setAddresses] = useState({});
-  const [userId, setUserId] = useState(localStorage.getItem("user_id"));
+  const [userId] = useState(localStorage.getItem("user_id"));
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setLoading(true);
-    fetch(`https://incident-report-backend-akvl.onrender.com/user/${userId}`)
-      .then((response) => response.json())
-      .then(async (data) => {
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch(
+          `https://incident-report-backend-akvl.onrender.com/user/${userId}`
+        );
+        const data = await response.json();
         const fetchedIncidents = data.incident_reports;
 
-        // Fetch addresses for incidents with lat/lon
         const fetchedAddresses = {};
         for (const incident of fetchedIncidents) {
           if (incident.latitude && incident.longitude) {
@@ -48,26 +50,21 @@ export default function IncidentDetails() {
 
         setIncidents(fetchedIncidents);
         setAddresses(fetchedAddresses);
-        setLoading(false);
-      })
-      .catch((error) => {
+      } catch (error) {
         console.error("Error fetching incidents:", error);
+      } finally {
         setLoading(false);
-      });
+      }
+    };
 
-    fetch("https://incident-report-backend-akvl.onrender.com/ratings")
-      .then((response) => response.json())
-      .then((data) => {
-        setReviews(data.message);
-      })
-      .catch((error) => console.error("Error fetching reviews:", error));
+    fetchData();
   }, [userId]);
 
   const handleSubmitReview = (reviewData) => {
     if (!selectedIncidentId) return;
 
     const existingReview = reviews.find(
-      (review) => review.incidentId === selectedIncidentId && review.userId === userId
+      (r) => r.incidentId === selectedIncidentId && r.userId === userId
     );
     if (existingReview) {
       toast("You have already rated this incident.");
@@ -81,62 +78,67 @@ export default function IncidentDetails() {
       rating: reviewData.rating,
       date: new Date().toISOString().split("T")[0],
       incidentId: selectedIncidentId,
-      userId: userId,
+      userId,
     };
-    setReviews((prevReviews) => [newReview, ...prevReviews]);
+
+    setReviews((prev) => [newReview, ...prev]);
     setShowReviewForm(false);
   };
 
-  const getIncidentReviews = (incidentId) => {
-    return reviews.filter((review) => review.incidentId === incidentId);
-  };
+  const getIncidentReviews = (id) => reviews.filter((r) => r.incidentId === id);
 
-  const getAverageRating = (incidentId) => {
-    const incidentReviews = getIncidentReviews(incidentId);
+  const getAverageRating = (id) => {
+    const incidentReviews = getIncidentReviews(id);
     if (incidentReviews.length === 0) return 0;
     return (
-      incidentReviews.reduce((acc, review) => acc + review.rating, 0) /
+      incidentReviews.reduce((acc, r) => acc + r.rating, 0) /
       incidentReviews.length
     );
   };
 
-  if (loading) {
+  if (loading)
     return (
-      <div className="p-6 max-w-4xl mx-auto text-center">
-        <div className="text-white">Loading incidents and reviews...</div>
+      <div className="p-6 max-w-4xl mx-auto text-center text-white">
+        Loading incidents and reviews...
       </div>
     );
-  }
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6 text-white">Incident Details</h1>
+    <div className="p-4 sm:p-6 max-w-5xl mx-auto">
+      <h1 className="text-2xl sm:text-3xl font-bold mb-6 text-center sm:text-left text-white">
+        Incident Details
+      </h1>
 
-      <div className="space-y-6">
+      <div className="space-y-8">
         {incidents.map((incident) => {
           const incidentReviews = getIncidentReviews(incident.id);
           const averageRating = getAverageRating(incident.id);
           const address = addresses[incident.id] || "Fetching address...";
 
           return (
-            <div key={incident.id} className="bg-gray-800 rounded-lg overflow-hidden text-white">
-              <div className="p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-xl font-bold text-white">{incident.title}</h2>
+            <div
+              key={incident.id}
+              className="bg-gray-800 rounded-xl overflow-hidden text-white shadow-md"
+            >
+              <div className="p-4 sm:p-6">
+                {/* Header */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-2">
+                  <h2 className="text-xl font-bold">{incident.title}</h2>
                   <span
-                    className={`px-3 py-1 rounded-full text-sm ${
+                    className={`px-3 py-1 rounded-full text-sm font-semibold ${
                       incident.status === "resolved"
-                        ? "bg-green-500"
+                        ? "bg-green-500 text-gray-900"
                         : incident.status === "under investigation"
-                        ? "bg-yellow-500"
-                        : "bg-red-500"
-                    } text-gray-900`}
+                        ? "bg-yellow-500 text-gray-900"
+                        : "bg-red-500 text-gray-900"
+                    }`}
                   >
                     {incident.status}
                   </span>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {/* Body Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                   <div>
                     <div className="flex items-center gap-2 text-gray-400 mb-2">
                       <MapPin className="w-4 h-4" />
@@ -146,27 +148,28 @@ export default function IncidentDetails() {
                       <Clock className="w-4 h-4" />
                       <span>{incident.date}</span>
                     </div>
-                    <p className="text-gray-300">{incident.description}</p>
+                    <p className="text-gray-300 leading-relaxed text-sm sm:text-base">
+                      {incident.description}
+                    </p>
                   </div>
 
-                  <div>
-                    {incident.images.length > 0 && (
-                      <img
-                        src={incident.images[0]}
-                        alt="incident image"
-                        className="w-full h-48 object-cover rounded-lg"
-                      />
-                    )}
-                  </div>
+                  {incident.images?.length > 0 && (
+                    <img
+                      src={incident.images[0]}
+                      alt="incident"
+                      className="w-full h-48 sm:h-56 md:h-64 object-cover rounded-lg"
+                    />
+                  )}
                 </div>
 
+                {/* Review Section */}
                 <div className="mt-6 flex flex-wrap gap-4">
                   <button
                     onClick={() => {
                       setSelectedIncidentId(incident.id);
                       setShowReviewForm(true);
                     }}
-                    className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded-lg"
+                    className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded-lg transition"
                   >
                     <Star className="w-4 h-4" />
                     <span>Rate Response</span>
@@ -175,11 +178,13 @@ export default function IncidentDetails() {
 
                 {incidentReviews.length > 0 && (
                   <div className="mt-6">
-                    <div className="flex items-center gap-3 mb-4">
-                      <h3 className="text-lg font-semibold">Response Ratings</h3>
+                    <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
+                      <h3 className="text-lg font-semibold">
+                        Response Ratings
+                      </h3>
                       <div className="flex items-center gap-2">
                         <StarRating rating={averageRating} />
-                        <span className="text-gray-400">
+                        <span className="text-gray-400 text-sm">
                           ({incidentReviews.length}{" "}
                           {incidentReviews.length === 1 ? "review" : "reviews"})
                         </span>
