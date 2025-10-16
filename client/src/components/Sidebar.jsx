@@ -59,14 +59,12 @@ export default function Sidebar({ isAdmin = false }) {
 
       {/* Sidebar for Desktop & Drawer for Mobile */}
       <div
-        className={`fixed md:static top-0 left-0 h-full w-64 bg-gray-900 text-white p-4 transform transition-transform duration-300 z-50 ${
-          menuOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"
-        }`}
+        className={`fixed md:static top-0 left-0 h-full md:h-auto w-64 md:w-56 bg-gray-900 text-white p-4 transform transition-transform duration-300 z-50 
+        ${menuOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}`}
       >
-        {/* Header */}
         <div className="flex items-center gap-2 mb-8">
           <AlertTriangle className="w-8 h-8 text-yellow-400" />
-          <h1 className="text-xl font-bold">RescueApp! Platform</h1>
+          <h1 className="text-lg md:text-xl font-bold leading-tight">RescueApp!</h1>
         </div>
 
         {/* Nav Links */}
@@ -75,9 +73,9 @@ export default function Sidebar({ isAdmin = false }) {
             <NavLink
               key={item.path}
               to={item.path}
-              onClick={() => setMenuOpen(false)} // close menu on mobile click
+              onClick={() => setMenuOpen(false)}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-4 py-2 rounded-lg transition-colors ${
+                `flex items-center gap-3 px-3 py-2 rounded-lg transition-colors text-sm md:text-base ${
                   isActive
                     ? "bg-yellow-500 text-gray-900"
                     : "hover:bg-gray-800"
@@ -85,16 +83,16 @@ export default function Sidebar({ isAdmin = false }) {
               }
             >
               <item.icon className="w-5 h-5" />
-              <span>{item.label}</span>
+              <span className="truncate">{item.label}</span>
             </NavLink>
           ))}
         </nav>
 
         {/* Logout Button */}
-        <div className="absolute bottom-4 left-4 right-4">
+        <div className="mt-10 md:mt-8">
           <button
             onClick={handleLogout}
-            className="flex items-center gap-2 w-full px-4 py-2 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition-colors"
+            className="flex items-center gap-2 w-full px-4 py-2 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition-colors text-sm md:text-base"
           >
             <LogOut className="w-5 h-5" />
             <span>Sign Out</span>
@@ -105,7 +103,7 @@ export default function Sidebar({ isAdmin = false }) {
       {/* Overlay for Mobile Drawer */}
       {menuOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-40 md:hidden"
+          className="fixed inset-0 bg-black bg-opacity-50 md:hidden"
           onClick={() => setMenuOpen(false)}
         ></div>
       )}

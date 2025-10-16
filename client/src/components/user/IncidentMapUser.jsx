@@ -31,21 +31,21 @@ function IncidentMapUser() {
   };
 
   return (
-    <div className="relative w-full h-[70vh] sm:h-[80vh] md:h-[90vh]">
+    <div className="relative w-full h-[75vh] sm:h-[85vh] md:h-[90vh]">
       {/* Map Type Switch */}
-      <div className="absolute top-4 left-1/2 sm:left-4 transform -translate-x-1/2 sm:translate-x-0 z-[1000] bg-gray-900/70 backdrop-blur-md rounded-lg p-2 flex space-x-2">
+      <div className="absolute top-3 left-1/2 sm:left-4 transform -translate-x-1/2 sm:translate-x-0 z-[1000] bg-gray-900/70 backdrop-blur-md rounded-md p-2 flex space-x-2 text-xs sm:text-sm">
         <button
           onClick={() => setMapType('streets')}
-          className={`px-3 py-1 rounded-md text-sm sm:text-base transition-all ${
-            mapType === 'streets' ? 'bg-yellow-500 text-black' : 'text-white hover:bg-white/10'
+          className={`px-2 sm:px-3 py-1 rounded-md transition-all ${
+            mapType === 'streets' ? 'bg-yellow-500 text-black font-semibold' : 'text-white hover:bg-white/10'
           }`}
         >
           Streets
         </button>
         <button
           onClick={() => setMapType('satellite')}
-          className={`px-3 py-1 rounded-md text-sm sm:text-base transition-all ${
-            mapType === 'satellite' ? 'bg-yellow-500 text-black' : 'text-white hover:bg-white/10'
+          className={`px-2 sm:px-3 py-1 rounded-md transition-all ${
+            mapType === 'satellite' ? 'bg-yellow-500 text-black font-semibold' : 'text-white hover:bg-white/10'
           }`}
         >
           Satellite
@@ -53,7 +53,23 @@ function IncidentMapUser() {
       </div>
 
       {/* Info Panel */}
-      <div className="absolute bottom-4 left-1/2 sm:left-auto sm:right-4 transform -translate-x-1/2 sm:translate-x-0 z-[1000] bg-gray-900/80 backdrop-blur-md rounded-lg p-3 sm:p-4 w-[90%] sm:w-72 md:w-80 max-h-56 overflow-y-auto">
+      <div
+        className="
+          absolute 
+          bottom-2 sm:bottom-4 
+          left-1/2 sm:left-auto sm:right-4 
+          transform -translate-x-1/2 sm:translate-x-0 
+          z-[1000] 
+          bg-gray-900/90 
+          backdrop-blur-md 
+          rounded-lg 
+          p-2 sm:p-4 
+          w-[95%] sm:w-72 md:w-80 
+          max-h-[40vh] sm:max-h-56 
+          overflow-y-auto
+          text-xs sm:text-sm
+        "
+      >
         <h3 className="text-white font-semibold mb-2 flex items-center text-sm sm:text-base">
           <Info className="h-4 w-4 mr-2" /> Incident Summary
         </h3>
@@ -70,38 +86,39 @@ function IncidentMapUser() {
             >
               <div className="flex items-start justify-between">
                 <div>
-                  <h4 className="text-white font-medium text-sm sm:text-base">{incident.title}</h4>
-                  <p className="text-gray-400 text-xs sm:text-sm">{incident.time}</p>
+                  <h4 className="text-white font-medium">{incident.title}</h4>
+                  <p className="text-gray-400 text-xs">{incident.time}</p>
                 </div>
-                <span className="text-yellow-400 text-xs sm:text-sm font-semibold">{incident.severity.toUpperCase()}</span>
+                <span className="text-yellow-400 text-[10px] sm:text-xs font-semibold">{incident.severity.toUpperCase()}</span>
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      {/* Map */}
+      {/* Map Container */}
       <MapContainer
         center={[-1.2921, 36.8219]}
         zoom={13}
         zoomControl={false}
-        className="h-full w-full"
+        className="h-full w-full rounded-lg overflow-hidden"
       >
         <ZoomControl position="bottomleft" />
         <TileLayer
-          url={mapType === 'streets'
-            ? 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-            : 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
+          url={
+            mapType === 'streets'
+              ? 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+              : 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}'
           }
         />
         {incidents.map((incident) => (
           <React.Fragment key={incident.id}>
             <Marker position={incident.position} icon={defaultIcon}>
               <Popup>
-                <div>
+                <div className="text-sm">
                   <h3 className="font-bold">{incident.title}</h3>
                   <p>{incident.description}</p>
-                  <small>{incident.time}</small>
+                  <small className="text-gray-500">{incident.time}</small>
                 </div>
               </Popup>
             </Marker>

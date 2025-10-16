@@ -104,12 +104,12 @@ export default function IncidentDetails() {
     );
 
   return (
-    <div className="p-4 sm:p-6 max-w-5xl mx-auto">
-      <h1 className="text-2xl sm:text-3xl font-bold mb-6 text-center sm:text-left text-white">
+    <div className="p-3 sm:p-4 md:p-6 max-w-5xl mx-auto">
+      <h1 className="text-xl sm:text-2xl md:text-3xl font-bold mb-5 sm:mb-6 text-center sm:text-left text-white">
         Incident Details
       </h1>
 
-      <div className="space-y-8">
+      <div className="space-y-6 sm:space-y-8">
         {incidents.map((incident) => {
           const incidentReviews = getIncidentReviews(incident.id);
           const averageRating = getAverageRating(incident.id);
@@ -120,12 +120,12 @@ export default function IncidentDetails() {
               key={incident.id}
               className="bg-gray-800 rounded-xl overflow-hidden text-white shadow-md"
             >
-              <div className="p-4 sm:p-6">
+              <div className="p-3 sm:p-5">
                 {/* Header */}
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-2">
-                  <h2 className="text-xl font-bold">{incident.title}</h2>
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-3 sm:mb-4 gap-2">
+                  <h2 className="text-lg sm:text-xl font-bold">{incident.title}</h2>
                   <span
-                    className={`px-3 py-1 rounded-full text-sm font-semibold ${
+                    className={`px-3 py-1 rounded-full text-xs sm:text-sm font-semibold ${
                       incident.status === "resolved"
                         ? "bg-green-500 text-gray-900"
                         : incident.status === "under investigation"
@@ -137,14 +137,14 @@ export default function IncidentDetails() {
                   </span>
                 </div>
 
-                {/* Body Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                {/* Body */}
+                <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
                   <div>
-                    <div className="flex items-center gap-2 text-gray-400 mb-2">
+                    <div className="flex items-center gap-2 text-gray-400 mb-2 text-sm sm:text-base">
                       <MapPin className="w-4 h-4" />
                       <span>{address}</span>
                     </div>
-                    <div className="flex items-center gap-2 text-gray-400 mb-4">
+                    <div className="flex items-center gap-2 text-gray-400 mb-3 text-sm sm:text-base">
                       <Clock className="w-4 h-4" />
                       <span>{incident.date}</span>
                     </div>
@@ -157,27 +157,28 @@ export default function IncidentDetails() {
                     <img
                       src={incident.images[0]}
                       alt="incident"
-                      className="w-full h-48 sm:h-56 md:h-64 object-cover rounded-lg"
+                      className="w-full h-40 sm:h-52 md:h-64 object-cover rounded-lg"
                     />
                   )}
                 </div>
 
-                {/* Review Section */}
-                <div className="mt-6 flex flex-wrap gap-4">
+                {/* Review Button */}
+                <div className="mt-5 flex flex-wrap gap-3">
                   <button
                     onClick={() => {
                       setSelectedIncidentId(incident.id);
                       setShowReviewForm(true);
                     }}
-                    className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white hover:bg-blue-700 rounded-lg transition"
+                    className="flex items-center gap-2 px-3 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm sm:text-base rounded-lg transition-all"
                   >
                     <Star className="w-4 h-4" />
                     <span>Rate Response</span>
                   </button>
                 </div>
 
+                {/* Ratings and Reviews */}
                 {incidentReviews.length > 0 && (
-                  <div className="mt-6">
+                  <div className="mt-5">
                     <div className="flex flex-col sm:flex-row sm:items-center gap-3 mb-4">
                       <h3 className="text-lg font-semibold">
                         Response Ratings

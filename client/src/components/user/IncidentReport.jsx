@@ -20,15 +20,18 @@ export default function IncidentReport() {
   });
 
   return (
-    <div className="p-4 sm:p-6 max-w-3xl mx-auto">
-      <h1 className="text-xl sm:text-2xl font-bold mb-6 text-white text-center sm:text-left">
+    <div className="p-3 sm:p-6 lg:p-8 max-w-4xl mx-auto">
+      <h1 className="text-lg sm:text-2xl font-bold mb-6 text-white text-center sm:text-left">
         Report an Incident
       </h1>
 
-      <form onSubmit={formik.handleSubmit} className="bg-gray-800 rounded-xl p-4 sm:p-6 space-y-6">
+      <form
+        onSubmit={formik.handleSubmit}
+        className="bg-gray-800 rounded-xl p-4 sm:p-6 lg:p-8 space-y-6 shadow-md"
+      >
         {/* Description */}
         <div>
-          <label className="block text-white font-medium">What happened?</label>
+          <label className="block text-white font-medium text-sm sm:text-base">What happened?</label>
           <textarea
             name="description"
             value={formik.values.description}
@@ -39,13 +42,13 @@ export default function IncidentReport() {
             placeholder="Describe the incident..."
           />
           {formik.touched.description && formik.errors.description && (
-            <p className="text-red-500 text-sm mt-1">{formik.errors.description}</p>
+            <p className="text-red-500 text-xs sm:text-sm mt-1">{formik.errors.description}</p>
           )}
         </div>
 
         {/* Location */}
         <div>
-          <label className="block text-white font-medium">Location</label>
+          <label className="block text-white font-medium text-sm sm:text-base">Location</label>
           <div className="mt-2 flex flex-col sm:flex-row gap-2">
             <input
               name="location"
@@ -54,22 +57,25 @@ export default function IncidentReport() {
               className="flex-1 bg-gray-700 text-white px-3 py-2 rounded-lg border border-gray-600 focus:outline-none focus:border-yellow-500 text-sm sm:text-base"
               placeholder="Enter location..."
             />
-            <button type="button" className="flex items-center justify-center gap-1 bg-gray-700 text-gray-400 hover:text-white rounded-lg px-3 py-2 text-sm">
+            <button
+              type="button"
+              className="flex items-center justify-center gap-1 bg-gray-700 text-gray-400 hover:text-white rounded-lg px-3 py-2 text-sm"
+            >
               <MapPin className="w-4 h-4" /> Use My Location
             </button>
           </div>
           {formik.touched.location && formik.errors.location && (
-            <p className="text-red-500 text-sm mt-1">{formik.errors.location}</p>
+            <p className="text-red-500 text-xs sm:text-sm mt-1">{formik.errors.location}</p>
           )}
         </div>
 
-        {/* Media Upload */}
+        {/* Evidence Upload */}
         <div>
-          <span className="text-white font-medium">Evidence</span>
+          <span className="text-white font-medium text-sm sm:text-base">Evidence</span>
           <div className="mt-2 flex flex-col sm:flex-row gap-3">
             <button
               type="button"
-              className="flex items-center justify-center gap-2 bg-gray-700 text-gray-400 hover:text-white px-3 py-2 rounded-lg"
+              className="flex items-center justify-center gap-2 bg-gray-700 text-gray-400 hover:text-white px-3 py-2 rounded-lg text-sm sm:text-base"
               onClick={() => imageInputRef.current.click()}
             >
               <Camera className="w-4 h-4" /> Add Photos
@@ -77,7 +83,7 @@ export default function IncidentReport() {
             </button>
             <button
               type="button"
-              className="flex items-center justify-center gap-2 bg-gray-700 text-gray-400 hover:text-white px-3 py-2 rounded-lg"
+              className="flex items-center justify-center gap-2 bg-gray-700 text-gray-400 hover:text-white px-3 py-2 rounded-lg text-sm sm:text-base"
               onClick={() => videoInputRef.current.click()}
             >
               <Camera className="w-4 h-4" /> Add Videos
@@ -85,12 +91,13 @@ export default function IncidentReport() {
             </button>
           </div>
 
-          <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-4">
+          {/* Previews */}
+          <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
             {imagePreviews.map((url, idx) => (
-              <img key={idx} src={url} className="h-24 object-cover rounded-lg" alt="preview" />
+              <img key={idx} src={url} className="h-24 sm:h-28 object-cover rounded-lg" alt="preview" />
             ))}
             {videoPreviews.map((url, idx) => (
-              <video key={idx} src={url} className="h-24 object-cover rounded-lg" controls />
+              <video key={idx} src={url} className="h-24 sm:h-28 object-cover rounded-lg" controls />
             ))}
           </div>
         </div>
@@ -98,7 +105,7 @@ export default function IncidentReport() {
         {/* Submit */}
         <button
           type="submit"
-          className="w-full py-2 sm:py-3 bg-yellow-500 text-black font-semibold rounded-lg hover:bg-yellow-400 transition"
+          className="w-full py-2 sm:py-3 bg-yellow-500 text-black font-semibold rounded-lg hover:bg-yellow-400 transition text-sm sm:text-base"
         >
           Report Incident
         </button>

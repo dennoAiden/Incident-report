@@ -12,9 +12,9 @@ export default function UserSettings() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white px-4 py-8 md:px-10">
+    <div className="min-h-screen bg-gray-900 text-white px-3 sm:px-6 py-6 sm:py-10 overflow-x-hidden">
       <div className="max-w-4xl mx-auto space-y-8">
-        <h1 className="text-2xl md:text-3xl font-bold text-center md:text-left">
+        <h1 className="text-2xl sm:text-3xl font-bold text-center sm:text-left">
           {t('App Settings')}
         </h1>
 
@@ -32,13 +32,18 @@ export default function UserSettings() {
           {({ values }) => (
             <Form className="space-y-6">
               {/* Notifications Section */}
-              <div className="bg-gray-800 rounded-lg p-6 sm:p-8">
-                <h2 className="text-lg font-semibold mb-4">{t('Notifications')}</h2>
+              <div className="bg-gray-800 rounded-lg p-4 sm:p-6 shadow-lg">
+                <h2 className="text-lg font-semibold mb-4">
+                  {t('Notifications')}
+                </h2>
+
                 <div className="space-y-4">
-                  <label className="flex items-center justify-between flex-wrap">
-                    <div className="flex items-center gap-3 mb-2 sm:mb-0">
+                  <label className="flex items-center justify-between flex-wrap gap-2">
+                    <div className="flex items-center gap-3">
                       <Bell className="w-5 h-5 text-yellow-500" />
-                      <span>{t('Push Notifications')}</span>
+                      <span className="text-sm sm:text-base">
+                        {t('Push Notifications')}
+                      </span>
                     </div>
                     <Field
                       type="checkbox"
@@ -47,10 +52,13 @@ export default function UserSettings() {
                       checked={values.pushNotifications}
                     />
                   </label>
-                  <label className="flex items-center justify-between flex-wrap">
-                    <div className="flex items-center gap-3 mb-2 sm:mb-0">
+
+                  <label className="flex items-center justify-between flex-wrap gap-2">
+                    <div className="flex items-center gap-3">
                       <Shield className="w-5 h-5 text-yellow-500" />
-                      <span>{t('Emergency Alerts')}</span>
+                      <span className="text-sm sm:text-base">
+                        {t('Emergency Alerts')}
+                      </span>
                     </div>
                     <Field
                       type="checkbox"
@@ -63,12 +71,12 @@ export default function UserSettings() {
               </div>
 
               {/* Appearance Section */}
-              <div className="bg-gray-800 rounded-lg p-6 sm:p-8">
+              <div className="bg-gray-800 rounded-lg p-4 sm:p-6 shadow-lg">
                 <h2 className="text-lg font-semibold mb-4">{t('Appearance')}</h2>
-                <label className="flex items-center justify-between flex-wrap">
-                  <div className="flex items-center gap-3 mb-2 sm:mb-0">
+                <label className="flex items-center justify-between flex-wrap gap-2">
+                  <div className="flex items-center gap-3">
                     <Moon className="w-5 h-5 text-yellow-500" />
-                    <span>{t('Dark Mode')}</span>
+                    <span className="text-sm sm:text-base">{t('Dark Mode')}</span>
                   </div>
                   <Field
                     type="checkbox"
@@ -80,27 +88,30 @@ export default function UserSettings() {
               </div>
 
               {/* Language Section */}
-              <div className="bg-gray-800 rounded-lg p-6 sm:p-8">
+              <div className="bg-gray-800 rounded-lg p-4 sm:p-6 shadow-lg">
                 <h2 className="text-lg font-semibold mb-4">{t('Language')}</h2>
-                <div className="flex items-center gap-3">
-                  <Globe className="w-5 h-5 text-yellow-500" />
-                  <Field
-                    as="select"
-                    name="language"
-                    className="bg-gray-700 text-white px-4 py-2 rounded-lg border border-gray-600 focus:outline-none focus:border-yellow-500 w-full sm:w-auto"
-                    onChange={handleLanguageChange}
-                    value={i18n.language}
-                  >
-                    <option value="en">{t('English')}</option>
-                    <option value="sw">{t('Swahili')}</option>
-                  </Field>
+                <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+                  <div className="flex items-center gap-3 w-full sm:w-auto">
+                    <Globe className="w-5 h-5 text-yellow-500" />
+                    <Field
+                      as="select"
+                      name="language"
+                      className="bg-gray-700 text-white px-4 py-2 rounded-lg border border-gray-600 focus:outline-none focus:border-yellow-500 w-full sm:w-auto"
+                      onChange={handleLanguageChange}
+                      value={i18n.language}
+                    >
+                      <option value="en">{t('English')}</option>
+                      <option value="sw">{t('Swahili')}</option>
+                    </Field>
+                  </div>
                 </div>
               </div>
 
+              {/* Submit Button */}
               <div className="text-center">
                 <button
                   type="submit"
-                  className="px-6 py-2 bg-yellow-500 text-gray-900 font-medium rounded-lg hover:bg-yellow-600 transition-colors w-full sm:w-auto"
+                  className="w-full sm:w-auto px-6 py-2 bg-yellow-500 text-gray-900 font-medium rounded-lg hover:bg-yellow-600 transition-colors"
                 >
                   {t('Save Settings')}
                 </button>
