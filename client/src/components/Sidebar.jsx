@@ -59,12 +59,14 @@ export default function Sidebar({ isAdmin = false }) {
 
       {/* Sidebar for Desktop & Drawer for Mobile */}
       <div
-        className={`fixed md:static top-0 left-0 h-full md:h-auto w-64 md:w-56 bg-gray-900 text-white p-4 transform transition-transform duration-300 z-50 
+        className={`fixed md:static top-0 left-0 h-full md:h-auto 
+        w-56 sm:w-48 md:w-52 lg:w-60 bg-gray-900 text-white p-4 
+        transform transition-transform duration-300 z-50 
         ${menuOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}`}
       >
         <div className="flex items-center gap-2 mb-8">
-          <AlertTriangle className="w-8 h-8 text-yellow-400" />
-          <h1 className="text-lg md:text-xl font-bold leading-tight">RescueApp!</h1>
+          <AlertTriangle className="w-7 h-7 text-yellow-400" />
+          <h1 className="text-lg md:text-xl font-bold">RescueApp!</h1>
         </div>
 
         {/* Nav Links */}
@@ -75,14 +77,15 @@ export default function Sidebar({ isAdmin = false }) {
               to={item.path}
               onClick={() => setMenuOpen(false)}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-3 py-2 rounded-lg transition-colors text-sm md:text-base ${
+                `flex items-center gap-3 px-3 py-2 rounded-lg text-sm md:text-base transition-colors
+                ${
                   isActive
-                    ? "bg-yellow-500 text-gray-900"
+                    ? "bg-yellow-500 text-gray-900 font-semibold"
                     : "hover:bg-gray-800"
                 }`
               }
             >
-              <item.icon className="w-5 h-5" />
+              <item.icon className="w-5 h-5 flex-shrink-0" />
               <span className="truncate">{item.label}</span>
             </NavLink>
           ))}
